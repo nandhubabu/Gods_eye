@@ -364,6 +364,166 @@ const WARS = [
             },
         ],
     },
+    {
+        id: 'israel-hamas',
+        name: 'Israel–Hamas War',
+        yearRange: '2023–Present',
+        startDate: '2023-10-07',
+        endDate: '2025-12-31',
+        center: [34.78, 31.5],
+        zoom: 7.5,
+        description:
+            "An ongoing major armed conflict in the Levant, triggered by a massive Hamas-led attack on Israel, resulting in an Israeli ground invasion of the Gaza Strip.",
+        events: [
+            {
+                id: 'ih-d1',
+                type: 'deployment',
+                title: 'Hamas initiates Operation Al-Aqsa Flood',
+                date: '2023-10-07',
+                coordinates: [34.35, 31.42],
+                description:
+                    "Thousands of Palestinian militants breached the Gaza–Israel barrier, attacking Israeli military bases and civilian communities.",
+                metadata: { forces: '~3,000 militants', side: 'Hamas' },
+            },
+            {
+                id: 'ih-m1',
+                type: 'missile_strike',
+                title: 'Initial Rocket Barrage on Israel',
+                date: '2023-10-07',
+                sourceCoordinates: [34.46, 31.5],
+                targetCoordinates: [34.78, 32.08],
+                description:
+                    "Hamas launched thousands of rockets (reported 3,000 to 5,000) over a few hours, overwhelming the Iron Dome defense system.",
+                metadata: { casualties: 'Dozens from rockets alone', weapon: 'Qassam and unguided rockets' },
+            },
+            {
+                id: 'ih-b1',
+                type: 'battle',
+                title: 'Battle of Sderot',
+                date: '2023-10-07',
+                coordinates: [34.59, 31.52],
+                description:
+                    "Militants infiltrated the Israeli city of Sderot and took over the local police station, leading to a multi-day firefight with the IDF.",
+                metadata: { casualties: '~70 Israelis killed', duration: 'Oct 7–8, 2023', side: 'Both' },
+            },
+            {
+                id: 'ih-d2',
+                type: 'deployment',
+                title: 'IDF Ground Invasion of Gaza',
+                date: '2023-10-27',
+                coordinates: [34.46, 31.53],
+                description:
+                    "Following heavy airstrikes, Israeli ground forces invaded the Gaza Strip with the stated goal of destroying Hamas's military capabilities.",
+                metadata: { forces: 'Initial force of tens of thousands', side: 'Israel' },
+            },
+            {
+                id: 'ih-b2',
+                type: 'battle',
+                title: 'Siege of Gaza City / Al-Shifa Hospital',
+                date: '2023-11-02',
+                coordinates: [34.46, 31.5],
+                description:
+                    "IDF forces encircled Gaza City and eventually raided Al-Shifa Hospital, claiming it was used as a Hamas command center.",
+                metadata: { casualties: 'Heavy civilian and combatant casualties', duration: 'Nov 2023', side: 'Both' },
+            },
+            {
+                id: 'ih-m2',
+                type: 'missile_strike',
+                title: 'Iranian Missile Attack on Israel',
+                date: '2024-04-13',
+                sourceCoordinates: [51.38, 35.68],
+                targetCoordinates: [35.21, 31.76],
+                description:
+                    "Iran launched over 300 drones and missiles at Israel in retaliation for a strike on its consulate in Damascus. Most were intercepted.",
+                metadata: { casualties: 'Minor injuries', weapon: 'Shahed drones, cruise/ballistic missiles' },
+            },
+        ],
+    },
+    {
+        id: 'vietnam-war',
+        name: 'Vietnam War',
+        yearRange: '1955–1975',
+        startDate: '1955-11-01',
+        endDate: '1975-04-30',
+        center: [106, 16],
+        zoom: 5,
+        description:
+            "A prolonged conflict in Southeast Asia pitting North Vietnam against South Vietnam and its principal ally, the United States. A major Cold War proxy war.",
+        events: [
+            {
+                id: 'vw-d1',
+                type: 'deployment',
+                title: 'Gulf of Tonkin Resolution',
+                date: '1964-08-07',
+                coordinates: [107.5, 19.5],
+                description:
+                    "Following naval incidents in the Gulf of Tonkin, the US Congress granted President Johnson authority to escalate American military involvement.",
+                metadata: { forces: 'Led to massive US troop buildup', side: 'USA / South Vietnam' },
+            },
+            {
+                id: 'vw-d2',
+                type: 'deployment',
+                title: 'First US Combat Troops Arrive (Da Nang)',
+                date: '1965-03-08',
+                coordinates: [108.2, 16.06],
+                description:
+                    "3,500 US Marines landed at Da Nang, marking the first commitment of American combat troops to the Vietnam War.",
+                metadata: { forces: '3,500 Marines', side: 'USA' },
+            },
+            {
+                id: 'vw-m1',
+                type: 'missile_strike',
+                title: 'Operation Rolling Thunder Begins',
+                date: '1965-03-02',
+                sourceCoordinates: [108.2, 16.06],
+                targetCoordinates: [105.8, 21.02],
+                description:
+                    "A gradual and sustained aerial bombardment campaign conducted by the US against North Vietnam to pressure them into halting support for the Viet Cong.",
+                metadata: { casualties: 'Tens of thousands (estimated)', weapon: 'Strategic bombers (B-52s, F-105s)' },
+            },
+            {
+                id: 'vw-b1',
+                type: 'battle',
+                title: 'Battle of Ia Drang',
+                date: '1965-11-14',
+                coordinates: [107.7, 13.57],
+                description:
+                    "The first major engagement between regular US Army forces and the People's Army of Vietnam (PAVN). Pioneered the use of helicopter air mobility.",
+                metadata: { casualties: '~300 US, ~1,500 PAVN', duration: 'Nov 14–18, 1965', side: 'Both' },
+            },
+            {
+                id: 'vw-b2',
+                type: 'battle',
+                title: 'The Tet Offensive',
+                date: '1968-01-30',
+                coordinates: [106.66, 10.76],
+                description:
+                    "A massive surprise attack by the Viet Cong and North Vietnamese covering over 100 cities. A military failure but a massive political victory that shocked the American public.",
+                metadata: { casualties: '~45,000 PAVN/VC, ~4,300 US, ~5,000 ARVN', duration: 'Jan 30 – Jun 8, 1968', side: 'Both' },
+            },
+            {
+                id: 'vw-m2',
+                type: 'missile_strike',
+                title: 'Operation Linebacker II (Christmas Bombings)',
+                date: '1972-12-18',
+                sourceCoordinates: [144.92, 13.58],
+                targetCoordinates: [105.8, 21.02],
+                description:
+                    "The heaviest bomber strikes of the war, intended to force North Vietnam to sign the Paris Peace Accords.",
+                metadata: { casualties: '1,624 civilians killed', weapon: 'B-52 Stratofortresses' },
+            },
+            {
+                id: 'vw-d3',
+                type: 'deployment',
+                title: 'Fall of Saigon',
+                date: '1975-04-30',
+                coordinates: [106.66, 10.76],
+                description:
+                    "North Vietnamese forces captured Saigon, marking the end of the Vietnam War and the reunification of the country.",
+                metadata: { forces: 'PAVN Victory', side: 'North Vietnam' },
+            },
+        ],
+    },
 ];
 
 export default WARS;
