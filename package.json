@@ -1,0 +1,25 @@
+{
+  "name": "gods-eye",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "deck.gl": "^9.1.5",
+    "@deck.gl/react": "^9.1.5",
+    "@deck.gl/layers": "^9.1.5",
+    "@deck.gl/core": "^9.1.5",
+    "maplibre-gl": "^4.7.1",
+    "@deck.gl/mapbox": "^9.1.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.0.5"
+  }
+}
