@@ -109,261 +109,261 @@ const WARS = [
                 date: '1944-12-16',
                 coordinates: [5.9, 50.3],
                 description:
-                    'Germany's last major offensive on the Western Front, aimed at splitting Allied forces in the Ardennes forest.',
-        metadata: { casualties: '~186,000 total', duration: 'Dec 1944 – Jan 1945', side: 'Both' },
-      },
-    {
-        id: 'ww2-b5',
-        type: 'battle',
-        title: 'Battle of Berlin',
-        date: '1945-04-16',
-        coordinates: [13.4, 52.52],
-        description:
-            'The final major offensive in the European theater. Soviet forces encircled and captured Berlin, leading to Germany's surrender.',
-        metadata: { casualties: '~350,000', duration: 'Apr 16 – May 2, 1945', side: 'Both' },
-      },
+                    "Germany's last major offensive on the Western Front, aimed at splitting Allied forces in the Ardennes forest.",
+                metadata: { casualties: '~186,000 total', duration: 'Dec 1944 – Jan 1945', side: 'Both' },
+            },
+            {
+                id: 'ww2-b5',
+                type: 'battle',
+                title: 'Battle of Berlin',
+                date: '1945-04-16',
+                coordinates: [13.4, 52.52],
+                description:
+                    "The final major offensive in the European theater. Soviet forces encircled and captured Berlin, leading to Germany's surrender.",
+                metadata: { casualties: '~350,000', duration: 'Apr 16 – May 2, 1945', side: 'Both' },
+            },
 
-// ── Missile Strikes / Bombings (Arcs) ──
-{
-    id: 'ww2-m1',
-        type: 'missile_strike',
-            title: 'V-2 Rocket attacks on London',
+            // ── Missile Strikes / Bombings (Arcs) ──
+            {
+                id: 'ww2-m1',
+                type: 'missile_strike',
+                title: 'V-2 Rocket attacks on London',
                 date: '1944-09-08',
-                    sourceCoordinates: [6.1, 52.5],
-                        targetCoordinates: [-0.12, 51.5],
-                            description:
-    'Germany launched V-2 ballistic missiles from the Netherlands, striking London and southeast England — the first long-range ballistic missile attacks in history.',
-        metadata: { casualties: '~2,754 killed in London', weapon: 'V-2 Rocket' },
-},
-{
-    id: 'ww2-m2',
-        type: 'missile_strike',
-            title: 'Atomic bombing of Hiroshima',
+                sourceCoordinates: [6.1, 52.5],
+                targetCoordinates: [-0.12, 51.5],
+                description:
+                    'Germany launched V-2 ballistic missiles from the Netherlands, striking London and southeast England — the first long-range ballistic missile attacks in history.',
+                metadata: { casualties: '~2,754 killed in London', weapon: 'V-2 Rocket' },
+            },
+            {
+                id: 'ww2-m2',
+                type: 'missile_strike',
+                title: 'Atomic bombing of Hiroshima',
                 date: '1945-08-06',
-                    sourceCoordinates: [141.98, 11.35],
-                        targetCoordinates: [132.45, 34.39],
-                            description:
-    'The United States dropped the atomic bomb "Little Boy" on Hiroshima from the B-29 Enola Gay, launched from Tinian island.',
-        metadata: { casualties: '~140,000', weapon: 'Little Boy (Uranium bomb)' },
-},
-{
-    id: 'ww2-m3',
-        type: 'missile_strike',
-            title: 'Atomic bombing of Nagasaki',
+                sourceCoordinates: [141.98, 11.35],
+                targetCoordinates: [132.45, 34.39],
+                description:
+                    'The United States dropped the atomic bomb "Little Boy" on Hiroshima from the B-29 Enola Gay, launched from Tinian island.',
+                metadata: { casualties: '~140,000', weapon: 'Little Boy (Uranium bomb)' },
+            },
+            {
+                id: 'ww2-m3',
+                type: 'missile_strike',
+                title: 'Atomic bombing of Nagasaki',
                 date: '1945-08-09',
-                    sourceCoordinates: [141.98, 11.35],
-                        targetCoordinates: [129.87, 32.77],
-                            description:
-    'Three days after Hiroshima, a second atomic bomb "Fat Man" was dropped on Nagasaki, leading to Japan's unconditional surrender.',
-    metadata: { casualties: '~70,000', weapon: 'Fat Man (Plutonium bomb)' },
-},
-{
-    id: 'ww2-m4',
-        type: 'missile_strike',
-            title: 'Blitz — bombing of London',
+                sourceCoordinates: [141.98, 11.35],
+                targetCoordinates: [129.87, 32.77],
+                description:
+                    "Three days after Hiroshima, a second atomic bomb \"Fat Man\" was dropped on Nagasaki, leading to Japan's unconditional surrender.",
+                metadata: { casualties: '~70,000', weapon: 'Fat Man (Plutonium bomb)' },
+            },
+            {
+                id: 'ww2-m4',
+                type: 'missile_strike',
+                title: 'Blitz — bombing of London',
                 date: '1940-09-07',
-                    sourceCoordinates: [8.0, 50.0],
-                        targetCoordinates: [-0.12, 51.5],
-                            description:
-    'The German Luftwaffe began sustained strategic bombing of London and other British cities in an attempt to break British morale.',
-        metadata: { casualties: '~43,000 civilians killed', weapon: 'Luftwaffe bombers' },
-},
-{
-    id: 'ww2-m5',
-        type: 'missile_strike',
-            title: 'Bombing of Dresden',
+                sourceCoordinates: [8.0, 50.0],
+                targetCoordinates: [-0.12, 51.5],
+                description:
+                    'The German Luftwaffe began sustained strategic bombing of London and other British cities in an attempt to break British morale.',
+                metadata: { casualties: '~43,000 civilians killed', weapon: 'Luftwaffe bombers' },
+            },
+            {
+                id: 'ww2-m5',
+                type: 'missile_strike',
+                title: 'Bombing of Dresden',
                 date: '1945-02-13',
-                    sourceCoordinates: [-1.0, 52.0],
-                        targetCoordinates: [13.74, 51.05],
-                            description:
-    'Allied forces conducted a controversial strategic bombing of Dresden, causing a firestorm that destroyed much of the city center.',
-        metadata: { casualties: '~25,000', weapon: 'RAF & USAAF bombers' },
-},
-    ],
-  },
+                sourceCoordinates: [-1.0, 52.0],
+                targetCoordinates: [13.74, 51.05],
+                description:
+                    'Allied forces conducted a controversial strategic bombing of Dresden, causing a firestorm that destroyed much of the city center.',
+                metadata: { casualties: '~25,000', weapon: 'RAF & USAAF bombers' },
+            },
+        ],
+    },
 
-{
-    id: 'gulf-war',
+    {
+        id: 'gulf-war',
         name: 'Gulf War',
-            yearRange: '1990–1991',
-                startDate: '1990-08-02',
-                    endDate: '1991-02-28',
-                        center: [45, 30],
-                            zoom: 5,
-                                description:
-    'A coalition of 35 nations led by the United States fought against Iraq in response to Iraq's invasion and annexation of Kuwait.',
-    events: [
-        {
-            id: 'gw-d1',
-            type: 'deployment',
-            title: 'U.S. forces deploy to Saudi Arabia',
-            date: '1990-08-07',
-            coordinates: [46.7, 24.7],
-            description:
-                'Operation Desert Shield — The U.S. began deploying hundreds of thousands of troops to Saudi Arabia to deter further Iraqi aggression.',
-            metadata: { forces: '700,000 coalition troops', side: 'Coalition' },
-        },
-        {
-            id: 'gw-d2',
-            type: 'deployment',
-            title: 'Iraqi forces occupy Kuwait',
-            date: '1990-08-02',
-            coordinates: [47.97, 29.37],
-            description:
-                'Iraq invaded Kuwait with 100,000 troops and 700 tanks, seizing control of the country within two days.',
-            metadata: { forces: '100,000 troops', side: 'Iraq' },
-        },
-        {
-            id: 'gw-b1',
-            type: 'battle',
-            title: 'Battle of Khafji',
-            date: '1991-01-29',
-            coordinates: [48.5, 28.4],
-            description:
-                'The first major ground engagement of the war. Iraqi forces briefly occupied the Saudi coastal town of Khafji before being repelled.',
-            metadata: { casualties: '~100 coalition, ~300 Iraqi', duration: 'Jan 29–Feb 1, 1991', side: 'Both' },
-        },
-        {
-            id: 'gw-b2',
-            type: 'battle',
-            title: '100 Hour Ground War',
-            date: '1991-02-24',
-            coordinates: [46.5, 30.0],
-            description:
-                'Operation Desert Sabre — the coalition ground assault that liberated Kuwait in just 100 hours with overwhelming armored force.',
-            metadata: { casualties: '~300 coalition, ~20,000 Iraqi', duration: 'Feb 24–28, 1991', side: 'Both' },
-        },
-        {
-            id: 'gw-m1',
-            type: 'missile_strike',
-            title: 'Scud missile attacks on Israel',
-            date: '1991-01-18',
-            sourceCoordinates: [44.0, 33.3],
-            targetCoordinates: [34.8, 32.1],
-            description:
-                'Iraq launched Scud missiles at Israel to provoke Israeli retaliation and fracture the Arab coalition against Iraq.',
-            metadata: { casualties: '~74 (indirect)', weapon: 'Al-Hussein Scud' },
-        },
-        {
-            id: 'gw-m2',
-            type: 'missile_strike',
-            title: 'Coalition air campaign — Baghdad',
-            date: '1991-01-17',
-            sourceCoordinates: [46.7, 24.7],
-            targetCoordinates: [44.36, 33.31],
-            description:
-                'Operation Desert Storm began with massive air strikes against Baghdad, targeting government and military infrastructure.',
-            metadata: { casualties: 'Classified', weapon: 'Tomahawk cruise missiles, F-117 stealth bombers' },
-        },
-        {
-            id: 'gw-m3',
-            type: 'missile_strike',
-            title: 'Scud attack on Dhahran barracks',
-            date: '1991-02-25',
-            sourceCoordinates: [44.0, 33.3],
-            targetCoordinates: [50.1, 26.27],
-            description:
-                'A Scud missile struck U.S. Army barracks in Dhahran, Saudi Arabia — the deadliest single attack on coalition forces.',
-            metadata: { casualties: '28 killed, 98 wounded', weapon: 'Al-Hussein Scud' },
-        },
-    ],
-  },
+        yearRange: '1990–1991',
+        startDate: '1990-08-02',
+        endDate: '1991-02-28',
+        center: [45, 30],
+        zoom: 5,
+        description:
+            "A coalition of 35 nations led by the United States fought against Iraq in response to Iraq's invasion and annexation of Kuwait.",
+        events: [
+            {
+                id: 'gw-d1',
+                type: 'deployment',
+                title: 'U.S. forces deploy to Saudi Arabia',
+                date: '1990-08-07',
+                coordinates: [46.7, 24.7],
+                description:
+                    'Operation Desert Shield — The U.S. began deploying hundreds of thousands of troops to Saudi Arabia to deter further Iraqi aggression.',
+                metadata: { forces: '700,000 coalition troops', side: 'Coalition' },
+            },
+            {
+                id: 'gw-d2',
+                type: 'deployment',
+                title: 'Iraqi forces occupy Kuwait',
+                date: '1990-08-02',
+                coordinates: [47.97, 29.37],
+                description:
+                    'Iraq invaded Kuwait with 100,000 troops and 700 tanks, seizing control of the country within two days.',
+                metadata: { forces: '100,000 troops', side: 'Iraq' },
+            },
+            {
+                id: 'gw-b1',
+                type: 'battle',
+                title: 'Battle of Khafji',
+                date: '1991-01-29',
+                coordinates: [48.5, 28.4],
+                description:
+                    'The first major ground engagement of the war. Iraqi forces briefly occupied the Saudi coastal town of Khafji before being repelled.',
+                metadata: { casualties: '~100 coalition, ~300 Iraqi', duration: 'Jan 29–Feb 1, 1991', side: 'Both' },
+            },
+            {
+                id: 'gw-b2',
+                type: 'battle',
+                title: '100 Hour Ground War',
+                date: '1991-02-24',
+                coordinates: [46.5, 30.0],
+                description:
+                    'Operation Desert Sabre — the coalition ground assault that liberated Kuwait in just 100 hours with overwhelming armored force.',
+                metadata: { casualties: '~300 coalition, ~20,000 Iraqi', duration: 'Feb 24–28, 1991', side: 'Both' },
+            },
+            {
+                id: 'gw-m1',
+                type: 'missile_strike',
+                title: 'Scud missile attacks on Israel',
+                date: '1991-01-18',
+                sourceCoordinates: [44.0, 33.3],
+                targetCoordinates: [34.8, 32.1],
+                description:
+                    'Iraq launched Scud missiles at Israel to provoke Israeli retaliation and fracture the Arab coalition against Iraq.',
+                metadata: { casualties: '~74 (indirect)', weapon: 'Al-Hussein Scud' },
+            },
+            {
+                id: 'gw-m2',
+                type: 'missile_strike',
+                title: 'Coalition air campaign — Baghdad',
+                date: '1991-01-17',
+                sourceCoordinates: [46.7, 24.7],
+                targetCoordinates: [44.36, 33.31],
+                description:
+                    'Operation Desert Storm began with massive air strikes against Baghdad, targeting government and military infrastructure.',
+                metadata: { casualties: 'Classified', weapon: 'Tomahawk cruise missiles, F-117 stealth bombers' },
+            },
+            {
+                id: 'gw-m3',
+                type: 'missile_strike',
+                title: 'Scud attack on Dhahran barracks',
+                date: '1991-02-25',
+                sourceCoordinates: [44.0, 33.3],
+                targetCoordinates: [50.1, 26.27],
+                description:
+                    'A Scud missile struck U.S. Army barracks in Dhahran, Saudi Arabia — the deadliest single attack on coalition forces.',
+                metadata: { casualties: '28 killed, 98 wounded', weapon: 'Al-Hussein Scud' },
+            },
+        ],
+    },
 
-{
-    id: 'ukraine-russia',
+    {
+        id: 'ukraine-russia',
         name: 'Russia–Ukraine War',
-            yearRange: '2022–Present',
-                startDate: '2022-02-24',
-                    endDate: '2025-12-31',
-                        center: [35, 49],
-                            zoom: 5.5,
-                                description:
-    'A major armed conflict triggered by Russia's full - scale invasion of Ukraine on 24 February 2022, the largest military conflict in Europe since WWII.',
-    events: [
-        {
-            id: 'ua-d1',
-            type: 'deployment',
-            title: 'Russian forces invade from multiple axes',
-            date: '2022-02-24',
-            coordinates: [30.5, 50.45],
-            description:
-                'Russia launched a multi-pronged invasion of Ukraine from Belarus, Russia, and Crimea, aiming to rapidly capture Kyiv.',
-            metadata: { forces: '~190,000 troops initially', side: 'Russia' },
-        },
-        {
-            id: 'ua-d2',
-            type: 'deployment',
-            title: 'Ukrainian Territorial Defense mobilized',
-            date: '2022-02-25',
-            coordinates: [30.52, 50.45],
-            description:
-                'Ukraine activated its Territorial Defense Forces and began distributing weapons to civilian volunteers across the country.',
-            metadata: { forces: '~900,000 total armed forces', side: 'Ukraine' },
-        },
-        {
-            id: 'ua-b1',
-            type: 'battle',
-            title: 'Battle of Kyiv',
-            date: '2022-02-25',
-            coordinates: [30.52, 50.45],
-            description:
-                'Russian forces advanced on Kyiv from the north. Fierce Ukrainian resistance, including at Hostomel airport, halted the advance. Russia withdrew from the Kyiv axis in April 2022.',
-            metadata: { casualties: 'Thousands on both sides', duration: 'Feb–Apr 2022', side: 'Both' },
-        },
-        {
-            id: 'ua-b2',
-            type: 'battle',
-            title: 'Siege of Mariupol',
-            date: '2022-03-01',
-            coordinates: [37.55, 47.1],
-            description:
-                'Russian forces besieged the port city of Mariupol for over two months. Ukrainian forces, including the Azov Regiment, made a last stand at the Azovstal steel plant.',
-            metadata: { casualties: '~25,000+ civilian deaths', duration: 'Feb–May 2022', side: 'Both' },
-        },
-        {
-            id: 'ua-b3',
-            type: 'battle',
-            title: 'Battle of Bakhmut',
-            date: '2022-08-01',
-            coordinates: [38.0, 48.6],
-            description:
-                'The longest and bloodiest battle of the war. Russian forces, including Wagner Group mercenaries, fought for months to capture the city.',
-            metadata: { casualties: 'Tens of thousands', duration: 'Aug 2022 – May 2023', side: 'Both' },
-        },
-        {
-            id: 'ua-m1',
-            type: 'missile_strike',
-            title: 'Missile strike on Kramatorsk railway station',
-            date: '2022-04-08',
-            coordinates: [37.6, 48.73],
-            description:
-                'A Russian Tochka-U missile struck the Kramatorsk railway station, where thousands of civilians were waiting to evacuate.',
-            metadata: { casualties: '~60 killed, 100+ wounded', weapon: 'Tochka-U ballistic missile' },
-        },
-        {
-            id: 'ua-m2',
-            type: 'missile_strike',
-            title: 'Cruise missile strikes on Kyiv',
-            date: '2022-10-10',
-            sourceCoordinates: [45.0, 55.0],
-            targetCoordinates: [30.52, 50.45],
-            description:
-                'Russia launched a massive wave of cruise missile and drone strikes targeting Ukrainian energy infrastructure across the country.',
-            metadata: { casualties: '19 killed, 100+ wounded', weapon: 'Kalibr & Kh-101 cruise missiles' },
-        },
-        {
-            id: 'ua-m3',
-            type: 'missile_strike',
-            title: 'Strike on Dnipro apartment building',
-            date: '2023-01-14',
-            sourceCoordinates: [45.0, 55.0],
-            targetCoordinates: [35.04, 48.46],
-            description:
-                'A Russian Kh-22 missile struck a residential apartment building in Dnipro, causing catastrophic collapse and civilian casualties.',
-            metadata: { casualties: '46 killed, 80+ wounded', weapon: 'Kh-22 anti-ship missile' },
-        },
-    ],
-  },
+        yearRange: '2022–Present',
+        startDate: '2022-02-24',
+        endDate: '2025-12-31',
+        center: [35, 49],
+        zoom: 5.5,
+        description:
+            "A major armed conflict triggered by Russia's full - scale invasion of Ukraine on 24 February 2022, the largest military conflict in Europe since WWII.",
+        events: [
+            {
+                id: 'ua-d1',
+                type: 'deployment',
+                title: 'Russian forces invade from multiple axes',
+                date: '2022-02-24',
+                coordinates: [30.5, 50.45],
+                description:
+                    'Russia launched a multi-pronged invasion of Ukraine from Belarus, Russia, and Crimea, aiming to rapidly capture Kyiv.',
+                metadata: { forces: '~190,000 troops initially', side: 'Russia' },
+            },
+            {
+                id: 'ua-d2',
+                type: 'deployment',
+                title: 'Ukrainian Territorial Defense mobilized',
+                date: '2022-02-25',
+                coordinates: [30.52, 50.45],
+                description:
+                    'Ukraine activated its Territorial Defense Forces and began distributing weapons to civilian volunteers across the country.',
+                metadata: { forces: '~900,000 total armed forces', side: 'Ukraine' },
+            },
+            {
+                id: 'ua-b1',
+                type: 'battle',
+                title: 'Battle of Kyiv',
+                date: '2022-02-25',
+                coordinates: [30.52, 50.45],
+                description:
+                    'Russian forces advanced on Kyiv from the north. Fierce Ukrainian resistance, including at Hostomel airport, halted the advance. Russia withdrew from the Kyiv axis in April 2022.',
+                metadata: { casualties: 'Thousands on both sides', duration: 'Feb–Apr 2022', side: 'Both' },
+            },
+            {
+                id: 'ua-b2',
+                type: 'battle',
+                title: 'Siege of Mariupol',
+                date: '2022-03-01',
+                coordinates: [37.55, 47.1],
+                description:
+                    'Russian forces besieged the port city of Mariupol for over two months. Ukrainian forces, including the Azov Regiment, made a last stand at the Azovstal steel plant.',
+                metadata: { casualties: '~25,000+ civilian deaths', duration: 'Feb–May 2022', side: 'Both' },
+            },
+            {
+                id: 'ua-b3',
+                type: 'battle',
+                title: 'Battle of Bakhmut',
+                date: '2022-08-01',
+                coordinates: [38.0, 48.6],
+                description:
+                    'The longest and bloodiest battle of the war. Russian forces, including Wagner Group mercenaries, fought for months to capture the city.',
+                metadata: { casualties: 'Tens of thousands', duration: 'Aug 2022 – May 2023', side: 'Both' },
+            },
+            {
+                id: 'ua-m1',
+                type: 'missile_strike',
+                title: 'Missile strike on Kramatorsk railway station',
+                date: '2022-04-08',
+                coordinates: [37.6, 48.73],
+                description:
+                    'A Russian Tochka-U missile struck the Kramatorsk railway station, where thousands of civilians were waiting to evacuate.',
+                metadata: { casualties: '~60 killed, 100+ wounded', weapon: 'Tochka-U ballistic missile' },
+            },
+            {
+                id: 'ua-m2',
+                type: 'missile_strike',
+                title: 'Cruise missile strikes on Kyiv',
+                date: '2022-10-10',
+                sourceCoordinates: [45.0, 55.0],
+                targetCoordinates: [30.52, 50.45],
+                description:
+                    'Russia launched a massive wave of cruise missile and drone strikes targeting Ukrainian energy infrastructure across the country.',
+                metadata: { casualties: '19 killed, 100+ wounded', weapon: 'Kalibr & Kh-101 cruise missiles' },
+            },
+            {
+                id: 'ua-m3',
+                type: 'missile_strike',
+                title: 'Strike on Dnipro apartment building',
+                date: '2023-01-14',
+                sourceCoordinates: [45.0, 55.0],
+                targetCoordinates: [35.04, 48.46],
+                description:
+                    'A Russian Kh-22 missile struck a residential apartment building in Dnipro, causing catastrophic collapse and civilian casualties.',
+                metadata: { casualties: '46 killed, 80+ wounded', weapon: 'Kh-22 anti-ship missile' },
+            },
+        ],
+    },
 ];
 
 export default WARS;
