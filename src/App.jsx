@@ -23,12 +23,13 @@ const typeLabel = (type) => {
         case 'missile_strike': return '🚀 Missile Strike';
         case 'deployment': return '🪖 Deployment';
         case 'battle': return '⚔️ Battle';
+        case 'capture': return '🏴 Territory Capture';
         default: return type;
     }
 };
 
 /* ── Filter types ── */
-const ALL_TYPES = ['missile_strike', 'deployment', 'battle'];
+const ALL_TYPES = ['missile_strike', 'deployment', 'battle', 'capture'];
 
 export default function App() {
     const [activeWarId, setActiveWarId] = useState(WARS[0].id);
@@ -72,7 +73,8 @@ export default function App() {
     }, [isPlaying, playSpeed, endMs]);
 
     /* Filter events by current time and type */
-    const visibleEvents = war.events.filter((e) => {
+    const allEvents = [...war.events, ...(war.captures || [])];
+    const visibleEvents = allEvents.filter((e) => {
         const eventMs = dateToMs(e.date);
         return eventMs <= currentMs && activeFilters.has(e.type);
     });
@@ -82,7 +84,36 @@ export default function App() {
         missiles: visibleEvents.filter((e) => e.type === 'missile_strike').length,
         deployments: visibleEvents.filter((e) => e.type === 'deployment').length,
         battles: visibleEvents.filter((e) => e.type === 'battle').length,
+        captures: (war.captures || []).filter((c) => dateToMs(c.date) <= currentMs).length,
     };
+
+    /* Compute dynamic territory assignments from capture events */
+    const currentParticipants = (() => {
+        // Start with the war's static participants
+        const result = { ...(war.participants || {}) };
+        const captures = war.captures || [];
+        // Apply each capture event that has already occurred on the timeline
+        const sorted = [...captures].sort((a, b) => dateToMs(a.date) - dateToMs(b.date));
+        for (const ev of sorted) {
+            if (dateToMs(ev.date) > currentMs) continue;
+            for (const country of ev.conquered) {
+                if (ev.conqueror) {
+                    // Mark the country as occupied by the conqueror's side
+                    const conquerorRole = result[ev.conqueror] || 'aggressor';
+                    result[country] = `${conquerorRole}_occupied`;
+                } else {
+                    // Liberation — restore original role from war.participants
+                    if (war.participants && war.participants[country]) {
+                        result[country] = war.participants[country];
+                    } else {
+                        delete result[country];
+                    }
+                }
+            }
+        }
+        result.__currentMs = currentMs;
+        return result;
+    })();
 
     const toggleFilter = useCallback((type) => {
         setActiveFilters((prev) => {
@@ -118,7 +149,7 @@ export default function App() {
     };
 
     /* Event markers on timeline */
-    const timelineMarkers = war.events.map((ev) => ({
+    const timelineMarkers = allEvents.map((ev) => ({
         pct: ((dateToMs(ev.date) - startMs) / (endMs - startMs)) * 100,
         active: dateToMs(ev.date) <= currentMs,
         type: ev.type,
@@ -130,6 +161,8 @@ export default function App() {
             {/* ── Map ── */}
             <MapView
                 events={visibleEvents}
+                activeWar={war}
+                currentParticipants={currentParticipants}
                 center={war.center}
                 zoom={war.zoom}
                 onEventClick={setSelectedEvent}
@@ -150,8 +183,8 @@ export default function App() {
                             onClick={() => toggleFilter(type)}
                             id={`filter-${type}`}
                         >
-                            <span className={`dot ${type === 'missile_strike' ? 'missile' : type === 'deployment' ? 'deployment' : 'battle'}`} />
-                            {type === 'missile_strike' ? 'Missiles' : type === 'deployment' ? 'Deployments' : 'Battles'}
+                            <span className={`dot ${type === 'missile_strike' ? 'missile' : type === 'deployment' ? 'deployment' : type === 'battle' ? 'battle' : 'capture'}`} />
+                            {type === 'missile_strike' ? 'Missiles' : type === 'deployment' ? 'Deployments' : type === 'battle' ? 'Battles' : 'Captures'}
                         </button>
                     ))}
                 </div>
@@ -185,6 +218,10 @@ export default function App() {
                 <div className="stat-card">
                     <div className="stat-label">Battles</div>
                     <div className="stat-value warning">{stats.battles}</div>
+                </div>
+                <div className="stat-card">
+                    <div className="stat-label">Captures</div>
+                    <div className="stat-value" style={{ color: 'var(--color-accent-captures, #c084fc)' }}>{stats.captures}</div>
                 </div>
             </aside>
 
@@ -326,6 +363,28 @@ export default function App() {
                                 </div>
                                 <div className="info-coords" style={{ marginTop: '4px' }}>
                                     Target: {selectedEvent.targetCoordinates[1].toFixed(2)}°, {selectedEvent.targetCoordinates[0].toFixed(2)}°
+                                </div>
+                            </div>
+                        )}
+
+
+                        {selectedEvent.type === 'capture' && (
+                            <div className="info-section">
+                                <div className="info-section-label">Territory Change</div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                                    {selectedEvent.conqueror && (
+                                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                                            <span style={{ color: 'var(--color-text-muted)', fontSize: '0.75rem', minWidth: '80px' }}>Occupied by</span>
+                                            <span style={{ color: '#c084fc', fontSize: '0.85rem', fontWeight: 600 }}>{selectedEvent.conqueror}</span>
+                                        </div>
+                                    )}
+                                    {!selectedEvent.conqueror && (
+                                        <div style={{ color: '#4ade80', fontSize: '0.85rem', fontWeight: 600 }}>✓ Liberation</div>
+                                    )}
+                                    <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
+                                        <span style={{ color: 'var(--color-text-muted)', fontSize: '0.75rem', minWidth: '80px' }}>Regions</span>
+                                        <span style={{ color: 'var(--color-text-primary)', fontSize: '0.85rem' }}>{(selectedEvent.conquered || []).join(', ')}</span>
+                                    </div>
                                 </div>
                             </div>
                         )}
