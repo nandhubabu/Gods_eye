@@ -25,14 +25,26 @@ const WARS = [
             GBR: 'allies', USA: 'allies', RUS: 'allies', UKR: 'allies', BLR: 'allies', POL: 'allies', FRA: 'allies', CHN: 'allies', AUS: 'allies', CAN: 'allies', NZL: 'allies', IND: 'allies', ZAF: 'allies', YUG: 'allies', GRC: 'allies', NLD: 'allies', BEL: 'allies', CZE: 'allies', NOR: 'allies'
         },
         captures: [
-            // Poland (Sep 1939)
-            { id: 'ww2-c1', type: 'capture', title: 'Germany occupies Poland', date: '1939-10-06', conqueror: 'DEU', conquered: ['POL'], description: 'After a 5-week campaign, Germany and the Soviet Union divided Poland. Germany annexed the west. Poland ceased to exist as a sovereign state.' },
-            // Denmark & Norway (Apr 1940)
-            { id: 'ww2-c2', type: 'capture', title: 'Germany occupies Denmark & Norway', date: '1940-04-09', conqueror: 'DEU', conquered: ['DNK', 'NOR'], description: 'Operation Weserübung — Germany launched simultaneous invasions of Denmark and Norway to secure iron ore supply routes.' },
-            // France, Belgium, Netherlands, Luxembourg (Jun 1940)
-            { id: 'ww2-c3', type: 'capture', title: 'Germany occupies France & Low Countries', date: '1940-06-25', conqueror: 'DEU', conquered: ['FRA', 'BEL', 'NLD', 'LUX'], description: 'After a stunning 6-week campaign, France fell to Germany. The Low Countries were also overrun. Vichy France became a puppet state.' },
-            // Yugoslavia & Greece (Apr 1941)
-            { id: 'ww2-c4', type: 'capture', title: 'Germany occupies Yugoslavia & Greece', date: '1941-04-17', conqueror: 'DEU', conquered: ['YUG', 'GRC'], description: 'Axis powers invaded and occupied Yugoslavia and Greece during the Balkans Campaign, securing the southern flank before Operation Barbarossa.' },
+            {
+                id: 'ww2-c1', type: 'capture', title: 'Germany occupies Poland', date: '1939-10-06',
+                conqueror: 'DEU', conquered: ['POL'],
+                description: 'After a 5-week campaign, Germany and the Soviet Union divided Poland. Germany annexed the west. Poland ceased to exist as a sovereign state.'
+            },
+            {
+                id: 'ww2-c2', type: 'capture', title: 'Germany occupies Denmark & Norway', date: '1940-04-09',
+                conqueror: 'DEU', conquered: ['DNK', 'NOR'],
+                description: 'Operation Weserübung — Germany launched simultaneous invasions of Denmark and Norway to secure iron ore supply routes.'
+            },
+            {
+                id: 'ww2-c3', type: 'capture', title: 'Germany occupies France & Low Countries', date: '1940-06-25',
+                conqueror: 'DEU', conquered: ['FRA', 'BEL', 'NLD', 'LUX'],
+                description: 'After a stunning 6-week campaign, France fell to Germany. The Low Countries were also overrun. Vichy France became a puppet state.'
+            },
+            {
+                id: 'ww2-c4', type: 'capture', title: 'Germany occupies Yugoslavia & Greece', date: '1941-04-17',
+                conqueror: 'DEU', conquered: ['YUG', 'GRC'],
+                description: 'Axis powers invaded and occupied Yugoslavia and Greece during the Balkans Campaign, securing the southern flank before Operation Barbarossa.'
+            },
         ],
         events: [
             // ── Deployments ──
@@ -214,9 +226,16 @@ const WARS = [
         },
         captures: [
             // Iraq captures Kuwait (Aug 1990)
-            { id: 'gw-c1', type: 'capture', title: 'Iraq occupies Kuwait', date: '1990-08-04', conqueror: 'IRQ', conquered: ['KWT'], description: 'Iraqi forces completed their takeover of Kuwait two days after the initial invasion, annexing it as the 19th province of Iraq.' },
-            // Liberation of Kuwait (Feb 1991)
-            { id: 'gw-c2', type: 'capture', title: 'Kuwait liberated', date: '1991-02-27', conqueror: null, conquered: ['KWT'], description: 'Coalition forces liberated Kuwait after 100 hours of ground combat, restoring the Al-Sabah government.' },
+            {
+                id: 'gw-c1', type: 'capture', title: 'Iraq occupies Kuwait', date: '1990-08-04',
+                conqueror: 'IRQ', conquered: ['KWT'],
+                description: 'Iraqi forces completed their takeover of Kuwait two days after the initial invasion, annexing it as the 19th province of Iraq.'
+            },
+            {
+                id: 'gw-c2', type: 'capture', title: 'Kuwait liberated', date: '1991-02-27',
+                conqueror: null, conquered: ['KWT'],
+                description: 'Coalition forces liberated Kuwait after 100 hours of ground combat, restoring the Al-Sabah government.'
+            },
         ],
         events: [
             {
@@ -309,6 +328,62 @@ const WARS = [
             RUS: 'aggressor', BLR: 'aggressor',
             UKR: 'defender'
         },
+        captures: [
+            // Initial Russian advance — north, Kyiv axis (Feb–Mar 2022, later retreated)
+            {
+                id: 'ua-c1', type: 'capture', title: 'Russian forces advance on Kyiv', date: '2022-02-26',
+                conqueror: 'RUS', conquered: [],
+                description: 'Russian armoured columns pushed south from Belarus toward Kyiv. The advance was halted and fully reversed by April 2022.',
+                region: { type: 'Polygon', coordinates: [[[29.0, 51.8], [31.8, 51.8], [31.8, 50.2], [29.0, 50.2], [29.0, 51.8]]] }
+            },
+            // Kherson oblast — south (Mar–Apr 2022)
+            {
+                id: 'ua-c2', type: 'capture', title: 'Russia captures Kherson Oblast', date: '2022-03-18',
+                conqueror: 'RUS', conquered: [],
+                description: 'Russian forces captured Kherson city and most of the oblast, establishing a land corridor to Crimea.',
+                region: { type: 'Polygon', coordinates: [[[31.8, 47.2], [35.1, 47.2], [35.1, 45.0], [31.8, 45.0], [31.8, 47.2]]] }
+            },
+            // Mariupol / southern Donetsk coast (May 2022)
+            {
+                id: 'ua-c3', type: 'capture', title: 'Mariupol & Azov coast captured', date: '2022-05-20',
+                conqueror: 'RUS', conquered: [],
+                description: 'After a brutal siege, the last Ukrainian defenders at Azovstal surrendered. Russia now controlled the entire Azov coastline.',
+                region: { type: 'Polygon', coordinates: [[[36.5, 47.3], [38.5, 47.3], [38.5, 46.8], [36.5, 46.8], [36.5, 47.3]]] }
+            },
+            // Luhansk oblast (Jun 2022)
+            {
+                id: 'ua-c4', type: 'capture', title: 'Russia captures Luhansk Oblast', date: '2022-06-25',
+                conqueror: 'RUS', conquered: [],
+                description: 'With the fall of Lysychansk, Russia took full control of Luhansk Oblast — its biggest territorial gain of 2022.',
+                region: { type: 'Polygon', coordinates: [[[38.0, 49.5], [40.3, 49.5], [40.3, 48.0], [38.0, 48.0], [38.0, 49.5]]] }
+            },
+            // Partial Donetsk & Zaporizhzhia (annexation, Sep 2022)
+            {
+                id: 'ua-c5', type: 'capture', title: 'Russia annexes Donetsk & Zaporizhzhia regions', date: '2022-09-30',
+                conqueror: 'RUS', conquered: [],
+                description: 'Putin signed decrees illegally annexing Donetsk, Luhansk, Zaporizhzhia and Kherson oblasts, despite not controlling all of their territory.',
+                region: {
+                    type: 'MultiPolygon', coordinates: [
+                        [[[37.0, 48.5], [39.8, 48.5], [39.8, 47.0], [37.0, 47.0], [37.0, 48.5]]],
+                        [[[34.5, 47.6], [37.2, 47.6], [37.2, 46.7], [34.5, 46.7], [34.5, 47.6]]]
+                    ]
+                }
+            },
+            // Kyiv axis liberated — retreat (Apr 2022)
+            {
+                id: 'ua-c6', type: 'capture', title: 'Russia retreats from Kyiv axis', date: '2022-04-02',
+                conqueror: null, conquered: [],
+                description: 'Russia withdrew all forces from the Kyiv and Chernihiv oblasts, returning control to Ukraine. A major strategic failure.',
+                region: { type: 'Polygon', coordinates: [[[29.0, 51.8], [31.8, 51.8], [31.8, 50.2], [29.0, 50.2], [29.0, 51.8]]] }
+            },
+            // Kherson city liberated (Nov 2022)
+            {
+                id: 'ua-c7', type: 'capture', title: 'Ukraine liberates Kherson city', date: '2022-11-11',
+                conqueror: null, conquered: [],
+                description: 'Ukrainian forces liberated Kherson city, the only regional capital Russia had captured. Russian forces retreated east of the Dnipro river.',
+                region: { type: 'Polygon', coordinates: [[[32.2, 46.8], [33.5, 46.8], [33.5, 46.4], [32.2, 46.4], [32.2, 46.8]]] }
+            },
+        ],
         events: [
             {
                 id: 'ua-d1',
@@ -562,6 +637,203 @@ const WARS = [
                 description:
                     "North Vietnamese forces captured Saigon, marking the end of the Vietnam War and the reunification of the country.",
                 metadata: { forces: 'PAVN Victory', side: 'North Vietnam' },
+            },
+        ],
+    },
+
+    // ── Korean War ──────────────────────────────────────────────────────────
+    {
+        id: 'korean-war',
+        name: 'Korean War',
+        yearRange: '1950–1953',
+        startDate: '1950-06-25',
+        endDate: '1953-07-27',
+        center: [127.5, 37.5],
+        zoom: 6,
+        description:
+            'A conflict that began when North Korea invaded South Korea, drawing in a UN coalition led by the United States and later Chinese forces, ending in an armistice near the original border.',
+        participants: {
+            PRK: 'aggressor', CHN: 'axis',
+            KOR: 'defender', USA: 'allies', GBR: 'allies', AUS: 'allies', CAN: 'allies', TUR: 'allies', FRA: 'allies',
+        },
+        captures: [
+            {
+                id: 'kw-c1', type: 'capture', title: 'North Korea overruns South', date: '1950-08-05',
+                conqueror: 'PRK', conquered: ['KOR'],
+                description: 'North Korean forces overwhelmed South Korean defenders, capturing 90% of the peninsula including Seoul, leaving only the Pusan Perimeter in the southeast.',
+            },
+            {
+                id: 'kw-c2', type: 'capture', title: 'UN forces push into North Korea', date: '1950-10-19',
+                conqueror: 'KOR', conquered: ['PRK'],
+                description: 'After the Inchon landing, UN forces crossed the 38th parallel and advanced deep into North Korea, reaching near the Chinese border.',
+            },
+            {
+                id: 'kw-c3', type: 'capture', title: 'Chinese intervention pushes UN back', date: '1950-12-15',
+                conqueror: 'PRK', conquered: ['PRK'],
+                description: '300,000 Chinese troops crossed the Yalu River, overwhelming UN forces and pushing them back south of the 38th parallel, recapturing Pyongyang and Seoul.',
+            },
+            {
+                id: 'kw-c4', type: 'capture', title: 'Stalemate at 38th Parallel', date: '1951-07-10',
+                conqueror: null, conquered: ['KOR', 'PRK'],
+                description: 'After intense fighting, front lines stabilized near the original border. Armistice talks began, lasting two years while combat continued.',
+            },
+        ],
+        events: [
+            {
+                id: 'kw-d1', type: 'deployment', title: 'North Korea invades South Korea',
+                date: '1950-06-25', coordinates: [127.0, 37.9],
+                description: 'At 4 AM, 75,000 North Korean soldiers of the Korean People\'s Army (KPA) poured across the 38th parallel, catching South Korean and US forces off guard.',
+                metadata: { forces: '75,000 KPA troops', side: 'North Korea' },
+            },
+            {
+                id: 'kw-d2', type: 'deployment', title: 'US troops rush to Korea from Japan',
+                date: '1950-07-01', coordinates: [128.6, 35.1],
+                description: 'Task Force Smith, the first US ground unit, arrived from Japan and engaged North Korean forces at Osan — only to be overwhelmed. More troops followed rapidly.',
+                metadata: { forces: '~400 initial, 140,000 by year end', side: 'USA' },
+            },
+            {
+                id: 'kw-b1', type: 'battle', title: 'Battle of Pusan Perimeter',
+                date: '1950-08-04', coordinates: [128.9, 35.4],
+                description: 'UN forces held a last defensive perimeter around the port of Pusan for 6 weeks, repelling repeated North Korean offensives until the Inchon breakout.',
+                metadata: { casualties: '~60,000 UN, ~90,000 KPA', duration: 'Aug–Sep 1950', side: 'Both' },
+            },
+            {
+                id: 'kw-b2', type: 'battle', title: 'Battle of Inchon',
+                date: '1950-09-15', coordinates: [126.6, 37.47],
+                description: 'MacArthur\'s bold amphibious counterattack at Inchon cut North Korean supply lines and encircled enemy forces, reversing the war in weeks.',
+                metadata: { casualties: '~3,500 UN, ~35,000 KPA', duration: 'Sep 15–19, 1950', side: 'Both' },
+            },
+            {
+                id: 'kw-b3', type: 'battle', title: 'Battle of Chosin Reservoir',
+                date: '1950-11-27', coordinates: [127.4, 40.6],
+                description: 'US Marines and Army troops were encircled by 120,000 Chinese forces at -40°F. The 17-day fighting withdrawal became one of the greatest military retreats in history.',
+                metadata: { casualties: '~17,500 UN, ~60,000 Chinese', duration: 'Nov 27–Dec 13, 1950', side: 'Both' },
+            },
+            {
+                id: 'kw-b4', type: 'battle', title: 'Battle of the Hook',
+                date: '1952-10-26', coordinates: [126.7, 37.95],
+                description: 'One of the fiercest battles of the static war phase. UN forces repelled a major Chinese assault on a strategic ridge near the Imjin River.',
+                metadata: { casualties: '~7,000 Chinese, ~3,000 UN', duration: 'Oct–Nov 1952', side: 'Both' },
+            },
+            {
+                id: 'kw-m1', type: 'missile_strike', title: 'UN bombing campaign — Pyongyang',
+                date: '1950-07-13',
+                sourceCoordinates: [128.9, 35.1], targetCoordinates: [125.74, 39.03],
+                description: 'The US Air Force bombed Pyongyang and North Korean infrastructure within weeks of the war\'s start, beginning a sustained air campaign that would eventually destroy most North Korean cities.',
+                metadata: { weapon: 'B-29 Superfortress bombers', casualties: 'Tens of thousands civilians' },
+            },
+            {
+                id: 'kw-m2', type: 'missile_strike', title: 'Bombing of Yalu River bridges',
+                date: '1950-11-08',
+                sourceCoordinates: [128.6, 37.5], targetCoordinates: [124.4, 40.1],
+                description: 'US aircraft bombed bridges over the Yalu River to cut off Chinese supply lines from Manchuria, though many planes were destroyed by MiG-15s in "MiG Alley".',
+                metadata: { weapon: 'F-80, B-29, F-86 aircraft', casualties: 'Bridge infrastructure destroyed' },
+            },
+        ],
+    },
+
+    // ── Syrian Civil War ─────────────────────────────────────────────────────
+    {
+        id: 'syrian-civil-war',
+        name: 'Syrian Civil War',
+        yearRange: '2011–2020',
+        startDate: '2011-03-15',
+        endDate: '2020-03-05',
+        center: [38.5, 35.0],
+        zoom: 5.5,
+        description:
+            'A complex multi-sided civil war triggered by Arab Spring protests against Assad\'s government, drawing in ISIS, Kurdish forces, Russia, Turkey, the USA, and Iran across a decade of devastating conflict.',
+        participants: {
+            SYR: 'aggressor',    // Assad government
+            RUS: 'allies',       // Allied with Assad
+            IRN: 'allies',       // Allied with Assad
+            IRQ: 'axis',         // ISIS control area
+            USA: 'defender',     // Allied with SDF/rebels
+            TUR: 'defender',     // Anti-Assad, anti-Kurd ops
+        },
+        captures: [
+            {
+                id: 'scw-c1', type: 'capture', title: 'ISIS captures eastern Syria & Iraq border', date: '2014-06-10',
+                conqueror: 'IRQ', conquered: [],
+                description: 'ISIS (the Islamic State) seized Mosul (Iraq) and rapidly captured vast swathes of eastern Syria and western Iraq, declaring a caliphate stretching across both countries.',
+                region: { type: 'Polygon', coordinates: [[[37.0, 37.5], [42.5, 37.5], [42.5, 33.5], [37.0, 33.5], [37.0, 37.5]]] }
+            },
+            {
+                id: 'scw-c2', type: 'capture', title: 'Rebels control northwest Syria', date: '2015-03-28',
+                conqueror: 'USA', conquered: [],
+                description: 'Opposition rebel groups (FSA and Jabhat al-Nusra) captured Idlib province and most of northwest Syria from government forces.',
+                region: { type: 'Polygon', coordinates: [[[35.7, 36.8], [37.5, 36.8], [37.5, 35.5], [35.7, 35.5], [35.7, 36.8]]] }
+            },
+            {
+                id: 'scw-c3', type: 'capture', title: 'Russia deploys; Assad regains ground', date: '2016-12-22',
+                conqueror: 'SYR', conquered: [],
+                description: 'With Russian air support, Syrian government forces recaptured all of Aleppo, the country\'s second-largest city, after a brutal siege — a major turning point of the war.',
+                region: { type: 'Polygon', coordinates: [[[36.8, 36.6], [37.4, 36.6], [37.4, 36.0], [36.8, 36.0], [36.8, 36.6]]] }
+            },
+            {
+                id: 'scw-c4', type: 'capture', title: 'US-backed SDF destroys ISIS caliphate', date: '2019-03-23',
+                conqueror: null, conquered: [],
+                description: 'US-backed Syrian Democratic Forces (SDF) liberated the last ISIS territory at Baghouz, ending the physical caliphate after years of grinding campaign.',
+                region: { type: 'Polygon', coordinates: [[[37.0, 37.5], [42.5, 37.5], [42.5, 33.5], [37.0, 33.5], [37.0, 37.5]]] }
+            },
+        ],
+        events: [
+            {
+                id: 'scw-d1', type: 'deployment', title: 'Arab Spring protests erupt in Daraa',
+                date: '2011-03-15', coordinates: [36.1, 32.62],
+                description: 'Pro-democracy protests inspired by the Arab Spring began in Daraa. Assad\'s violent crackdown on demonstrators sparked armed rebellion across the country.',
+                metadata: { forces: 'Civilian protesters → armed militias', side: 'Opposition' },
+            },
+            {
+                id: 'scw-d2', type: 'deployment', title: 'Russia begins military intervention',
+                date: '2015-09-30', coordinates: [35.95, 35.4],
+                description: 'Russia launched its military intervention in Syria from Khmeimim Air Base near Latakia, conducting airstrikes officially against ISIS but heavily targeting anti-Assad rebels.',
+                metadata: { forces: '~4,000 Russian personnel, fighter jets, naval group', side: 'Russia/Assad' },
+            },
+            {
+                id: 'scw-d3', type: 'deployment', title: 'US Special Forces support Kurdish SDF',
+                date: '2015-10-30', coordinates: [41.2, 37.1],
+                description: 'The US deployed advisors to work with the Syrian Democratic Forces (SDF), a Kurdish-led coalition, to fight ISIS in northeast Syria.',
+                metadata: { forces: '~2,000 US troops at peak', side: 'USA/SDF' },
+            },
+            {
+                id: 'scw-b1', type: 'battle', title: 'Siege of Aleppo',
+                date: '2015-10-01', coordinates: [37.16, 36.2],
+                description: 'The four-year battle for Syria\'s second city — one of the longest and most devastating urban sieges of the 21st century. Government forces finally retook it with Russian air support in December 2016.',
+                metadata: { casualties: '31,000+ killed in Aleppo', duration: '2012–Dec 2016', side: 'Both' },
+            },
+            {
+                id: 'scw-b2', type: 'battle', title: 'Battle of Raqqa — ISIS capital falls',
+                date: '2017-06-06', coordinates: [38.99, 35.95],
+                description: 'US-backed SDF forces besieged and captured Raqqa, the self-declared capital of the ISIS caliphate, in a brutal four-month battle that destroyed much of the city.',
+                metadata: { casualties: '~3,000 ISIS, 1,000+ civilians', duration: 'Jun–Oct 2017', side: 'SDF/USA' },
+            },
+            {
+                id: 'scw-b3', type: 'battle', title: 'Battle of Deir ez-Zor',
+                date: '2017-09-09', coordinates: [40.14, 35.34],
+                description: 'Syrian army and Russian forces broke the three-year ISIS siege of Deir ez-Zor city as the caliphate collapsed in the Euphrates Valley.',
+                metadata: { casualties: 'Thousands over 3-year siege', duration: 'Sep–Nov 2017', side: 'Syria/Russia' },
+            },
+            {
+                id: 'scw-m1', type: 'missile_strike', title: 'US cruise missile strike on Shayrat air base',
+                date: '2017-04-07',
+                sourceCoordinates: [34.0, 34.5], targetCoordinates: [36.9, 34.49],
+                description: 'The United States fired 59 Tomahawk cruise missiles at Shayrat air base in retaliation for a Syrian chemical weapons attack on Khan Shaykhun that killed 87 civilians.',
+                metadata: { casualties: 'Air base infrastructure', weapon: 'BGM-109 Tomahawk cruise missiles' },
+            },
+            {
+                id: 'scw-m2', type: 'missile_strike', title: 'Russia strikes rebel positions from Caspian Sea',
+                date: '2015-10-07',
+                sourceCoordinates: [50.5, 41.5], targetCoordinates: [37.5, 35.5],
+                description: 'Russia launched 26 cruise missiles from warships in the Caspian Sea, striking targets in Syria in a dramatic display of long-range power projection.',
+                metadata: { weapon: 'Kalibr cruise missiles', casualties: 'Rebel command infrastructure' },
+            },
+            {
+                id: 'scw-m3', type: 'missile_strike', title: 'US/UK/France strike — Operation Hammerfall',
+                date: '2018-04-14',
+                sourceCoordinates: [28.0, 35.5], targetCoordinates: [36.4, 33.55],
+                description: 'Following the Douma chemical attack, the US, UK, and France launched over 100 missiles at Syrian chemical weapons facilities in Damascus and Homs.',
+                metadata: { weapon: 'Tomahawk, Storm Shadow, SCALP missiles', casualties: 'CW facilities destroyed' },
             },
         ],
     },

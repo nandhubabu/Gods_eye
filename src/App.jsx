@@ -111,6 +111,7 @@ export default function App() {
                 }
             }
         }
+        result.__currentMs = currentMs;
         return result;
     })();
 
