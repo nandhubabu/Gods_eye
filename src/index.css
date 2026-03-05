@@ -216,6 +216,7 @@ html, body, #root {
 .filter-btn .dot.deployment { background: var(--color-accent); }
 .filter-btn .dot.battle { background: var(--color-warning); }
 .filter-btn .dot.territory { background: var(--color-success); }
+.filter-btn .dot.capture { background: #c084fc; }
 
 /* ---------- War Selector ---------- */
 .war-selector {
@@ -507,6 +508,11 @@ html, body, #root {
   background: rgba(255, 145, 0, 0.2);
   color: var(--color-warning);
   border: 1px solid rgba(255, 145, 0, 0.3);
+}
+.info-badge.capture {
+  background: rgba(192, 132, 252, 0.2);
+  color: #c084fc;
+  border: 1px solid rgba(192, 132, 252, 0.3);
 }
 
 .info-coords {

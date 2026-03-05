@@ -18,6 +18,22 @@ const WARS = [
         zoom: 3,
         description:
             'The deadliest conflict in human history, involving more than 30 countries and resulting in 70–85 million fatalities.',
+        participants: {
+            // Axis
+            DEU: 'axis', JPN: 'axis', ITA: 'axis', HUN: 'axis', ROU: 'axis', BGR: 'axis',
+            // Allies
+            GBR: 'allies', USA: 'allies', RUS: 'allies', UKR: 'allies', BLR: 'allies', POL: 'allies', FRA: 'allies', CHN: 'allies', AUS: 'allies', CAN: 'allies', NZL: 'allies', IND: 'allies', ZAF: 'allies', YUG: 'allies', GRC: 'allies', NLD: 'allies', BEL: 'allies', CZE: 'allies', NOR: 'allies'
+        },
+        captures: [
+            // Poland (Sep 1939)
+            { id: 'ww2-c1', type: 'capture', title: 'Germany occupies Poland', date: '1939-10-06', conqueror: 'DEU', conquered: ['POL'], description: 'After a 5-week campaign, Germany and the Soviet Union divided Poland. Germany annexed the west. Poland ceased to exist as a sovereign state.' },
+            // Denmark & Norway (Apr 1940)
+            { id: 'ww2-c2', type: 'capture', title: 'Germany occupies Denmark & Norway', date: '1940-04-09', conqueror: 'DEU', conquered: ['DNK', 'NOR'], description: 'Operation Weserübung — Germany launched simultaneous invasions of Denmark and Norway to secure iron ore supply routes.' },
+            // France, Belgium, Netherlands, Luxembourg (Jun 1940)
+            { id: 'ww2-c3', type: 'capture', title: 'Germany occupies France & Low Countries', date: '1940-06-25', conqueror: 'DEU', conquered: ['FRA', 'BEL', 'NLD', 'LUX'], description: 'After a stunning 6-week campaign, France fell to Germany. The Low Countries were also overrun. Vichy France became a puppet state.' },
+            // Yugoslavia & Greece (Apr 1941)
+            { id: 'ww2-c4', type: 'capture', title: 'Germany occupies Yugoslavia & Greece', date: '1941-04-17', conqueror: 'DEU', conquered: ['YUG', 'GRC'], description: 'Axis powers invaded and occupied Yugoslavia and Greece during the Balkans Campaign, securing the southern flank before Operation Barbarossa.' },
+        ],
         events: [
             // ── Deployments ──
             {
@@ -192,6 +208,16 @@ const WARS = [
         zoom: 5,
         description:
             "A coalition of 35 nations led by the United States fought against Iraq in response to Iraq's invasion and annexation of Kuwait.",
+        participants: {
+            IRQ: 'aggressor', JOR: 'aggressor', // Some allied forces with Iraq
+            KWT: 'defender', USA: 'allies', SAU: 'allies', GBR: 'allies', FRA: 'allies', EGY: 'allies', SYR: 'allies', MAR: 'allies', OMN: 'allies', PAK: 'allies', ARE: 'allies', QAT: 'allies', BGD: 'allies', CAN: 'allies'
+        },
+        captures: [
+            // Iraq captures Kuwait (Aug 1990)
+            { id: 'gw-c1', type: 'capture', title: 'Iraq occupies Kuwait', date: '1990-08-04', conqueror: 'IRQ', conquered: ['KWT'], description: 'Iraqi forces completed their takeover of Kuwait two days after the initial invasion, annexing it as the 19th province of Iraq.' },
+            // Liberation of Kuwait (Feb 1991)
+            { id: 'gw-c2', type: 'capture', title: 'Kuwait liberated', date: '1991-02-27', conqueror: null, conquered: ['KWT'], description: 'Coalition forces liberated Kuwait after 100 hours of ground combat, restoring the Al-Sabah government.' },
+        ],
         events: [
             {
                 id: 'gw-d1',
@@ -279,6 +305,10 @@ const WARS = [
         zoom: 5.5,
         description:
             "A major armed conflict triggered by Russia's full - scale invasion of Ukraine on 24 February 2022, the largest military conflict in Europe since WWII.",
+        participants: {
+            RUS: 'aggressor', BLR: 'aggressor',
+            UKR: 'defender'
+        },
         events: [
             {
                 id: 'ua-d1',
@@ -374,6 +404,12 @@ const WARS = [
         zoom: 7.5,
         description:
             "An ongoing major armed conflict in the Levant, triggered by a massive Hamas-led attack on Israel, resulting in an Israeli ground invasion of the Gaza Strip.",
+        participants: {
+            ISR: 'defender', // Assuming Hamas is not a separate ISO country in the map (usually PSE for Palestine). Let's use PSE as well.
+            PSE: 'aggressor',
+            IRN: 'aggressor', LBN: 'aggressor', // As involved actors
+            USA: 'allies'
+        },
         events: [
             {
                 id: 'ih-d1',
@@ -449,6 +485,11 @@ const WARS = [
         zoom: 5,
         description:
             "A prolonged conflict in Southeast Asia pitting North Vietnam against South Vietnam and its principal ally, the United States. A major Cold War proxy war.",
+        participants: {
+            VNM: 'both', // Representing both North and South
+            USA: 'allies', KOR: 'allies', AUS: 'allies', THA: 'allies', NZL: 'allies', PHL: 'allies',
+            CHN: 'aggressor', RUS: 'aggressor' // Supported North
+        },
         events: [
             {
                 id: 'vw-d1',

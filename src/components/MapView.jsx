@@ -1,19 +1,21 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { Deck } from '@deck.gl/core';
-import { ArcLayer, ScatterplotLayer } from '@deck.gl/layers';
+import { ArcLayer, ScatterplotLayer, GeoJsonLayer } from '@deck.gl/layers';
+import COUNTRIES_GEOJSON from '../data/countries.geo.json';
 
 /**
  * MapView — renders a MapLibre base map with Deck.gl overlay layers.
  *
  * Props:
  *  - events:       filtered war events to display
+ *  - activeWar:    the currently selected war object containing participants
  *  - center:       [lng, lat]
  *  - zoom:         number
  *  - onEventClick: (event) => void
  */
-export default function MapView({ events = [], center, zoom, onEventClick }) {
+export default function MapView({ events = [], activeWar, currentParticipants, center, zoom, onEventClick }) {
     const mapContainerRef = useRef(null);
     const mapRef = useRef(null);
     const deckRef = useRef(null);
@@ -128,6 +130,38 @@ export default function MapView({ events = [], center, zoom, onEventClick }) {
             },
             controller: false,
             layers: [
+                new GeoJsonLayer({
+                    id: 'countries',
+                    data: COUNTRIES_GEOJSON,
+                    stroked: true,
+                    filled: true,
+                    lineWidthMinPixels: 1,
+                    getLineColor: [60, 60, 60, 100],
+                    getFillColor: (d) => {
+                        // Use dynamic currentParticipants if available, else fall back to activeWar.participants
+                        const participants = currentParticipants || (activeWar && activeWar.participants) || {};
+                        if (!d.id) return [0, 0, 0, 0];
+                        const role = participants[d.id];
+                        switch (role) {
+                            // Base alliance roles
+                            case 'aggressor': return [255, 61, 61, 110];    // Red
+                            case 'defender': return [61, 150, 255, 110];   // Blue
+                            case 'allies': return [61, 200, 255, 70];    // Light blue
+                            case 'axis': return [255, 145, 0, 110];    // Orange
+                            case 'both': return [180, 61, 255, 110];   // Purple
+                            // Occupied territory roles (lighter, distinct tones)
+                            case 'aggressor_occupied': return [255, 80, 80, 160]; // Bright red — occupied by an aggressor
+                            case 'axis_occupied': return [255, 160, 20, 160]; // Amber — axis-occupied
+                            case 'allies_occupied': return [80, 200, 120, 160]; // Green — allies-occupied
+                            case 'defender_occupied': return [100, 180, 255, 160]; // Sky blue — occupied by defender
+                            default: return [0, 0, 0, 0];
+                        }
+                    },
+                    updateTriggers: {
+                        getFillColor: [currentParticipants, activeWar],
+                    },
+                    pickable: false
+                }),
                 new ArcLayer({
                     id: 'missile-arcs',
                     data: missiles,
@@ -189,6 +223,8 @@ export default function MapView({ events = [], center, zoom, onEventClick }) {
             ],
             getTooltip: ({ object }) => {
                 if (!object) return null;
+                // Exclude tooltip for countries layer if it becomes pickable later
+                if (object.properties && object.properties.name) return null;
                 return {
                     html: `<div class="map-tooltip">
             <div class="tooltip-title">${object.title}</div>
@@ -231,7 +267,7 @@ export default function MapView({ events = [], center, zoom, onEventClick }) {
                 deckRef.current = null;
             }
         };
-    }, [events, onEventClick]);
+    }, [events, onEventClick, currentParticipants, activeWar]);
 
     return <div ref={mapContainerRef} className="map-wrapper" />;
 }
