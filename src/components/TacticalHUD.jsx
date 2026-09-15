@@ -16,6 +16,7 @@ export default function TacticalHUD({
 }) {
     const [zuluTime, setZuluTime] = useState('');
     const [soundEnabled, setSoundEnabled] = useState(true);
+    const [isLeftCollapsed, setIsLeftCollapsed] = useState(false);
 
     // Live UTC Clock
     useEffect(() => {
@@ -111,10 +112,26 @@ export default function TacticalHUD({
             </header>
 
             {/* ════════════════ LEFT SITUATIONAL MATRIX ════════════════ */}
-            <aside className="left-c2-drawer glass-panel">
-                <div className="drawer-header">
-                    <span className="drawer-title">GLOBAL SITUATION LAYERS</span>
-                </div>
+            {isLeftCollapsed ? (
+                <button
+                    className="drawer-expand-btn glass-panel"
+                    onClick={() => setIsLeftCollapsed(false)}
+                    title="Expand Layers & Theaters Panel"
+                >
+                    ☰ SENSORS &amp; THEATERS
+                </button>
+            ) : (
+                <aside className="left-c2-drawer glass-panel">
+                    <div className="drawer-header">
+                        <span className="drawer-title">GLOBAL SITUATION LAYERS</span>
+                        <button
+                            className="drawer-collapse-btn"
+                            onClick={() => setIsLeftCollapsed(true)}
+                            title="Collapse Panel for Unobstructed Globe View"
+                        >
+                            ◀
+                        </button>
+                    </div>
 
                 {/* Layer Toggles */}
                 <div className="layer-matrix-section">
@@ -195,6 +212,7 @@ export default function TacticalHUD({
                     </div>
                 </div>
             </aside>
+            )}
 
             {/* ════════════════ RIGHT OBJECT DOSSIER / DETAILS ════════════════ */}
             <aside className={`right-telemetry-drawer glass-panel ${selectedEntity ? 'open' : ''}`}>

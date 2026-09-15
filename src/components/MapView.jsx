@@ -1,20 +1,13 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { Deck, _GlobeView as GlobeView, MapView as DeckMapView } from '@deck.gl/core';
+import { Deck, _GlobeView as GlobeView, FlyToInterpolator } from '@deck.gl/core';
 import { ArcLayer, ScatterplotLayer, GeoJsonLayer, PathLayer } from '@deck.gl/layers';
-import { HeatmapLayer } from '@deck.gl/aggregation-layers';
 import COUNTRIES_GEOJSON from '../data/countries.geo.json';
 import { GLOBE_GRATICULES, densifyOrbitPath } from '../utils/globeUtils';
 
-const COUNTRY_INDEX = Object.fromEntries(
-    (COUNTRIES_GEOJSON.features || []).map((f) => [f.id, f])
-);
-
 export default function MapView({
     events = [],
-    activeWar,
-    currentParticipants,
     satellites = [],
     satelliteOrbits = [],
     flights = [],
@@ -26,24 +19,14 @@ export default function MapView({
     zoom,
     onEntityClick,
     trackedEntity,
-    viewMode = 'globe', // Default to 3D Globe as requested
+    viewMode = 'globe',
     setViewMode,
 }) {
     const containerRef = useRef(null);
     const mapLibreContainerRef = useRef(null);
-    const deckCanvasRef = useRef(null);
 
     const mapRef = useRef(null);
     const deckRef = useRef(null);
-
-    // Globe ViewState
-    const [globeViewState, setGlobeViewState] = useState({
-        longitude: center ? center[0] : 20,
-        latitude: center ? center[1] : 25,
-        zoom: 0.6,
-        minZoom: -1.2,
-        maxZoom: 14,
-    });
 
     const [isAutoRotating, setIsAutoRotating] = useState(false);
     const [time, setTime] = useState(0);
@@ -56,17 +39,11 @@ export default function MapView({
         let animationFrame;
         const animate = () => {
             setTime((t) => (t + 1) % 10000);
-            if (isAutoRotating && viewMode === 'globe') {
-                setGlobeViewState((prev) => ({
-                    ...prev,
-                    longitude: (prev.longitude + 0.15) % 360,
-                }));
-            }
             animationFrame = requestAnimationFrame(animate);
         };
         animate();
         return () => cancelAnimationFrame(animationFrame);
-    }, [isAutoRotating, viewMode]);
+    }, []);
 
     /* ── Tooltip generator ── */
     const getTooltip = ({ object }) => {
@@ -81,17 +58,20 @@ export default function MapView({
             subtitle = `🛰️ ${object.type?.toUpperCase()} // NORAD ${object.noradId}`;
             details = `Alt: ${object.altKm} km · Speed: ${object.speedKms} km/s`;
         } else if (object.entityType === 'flight') {
-            subtitle = `✈️ ${object.aircraft} (${object.operator || object.category})`;
+            subtitle = `✈️ ${object.aircraft} (${object.operator || object.country})`;
             details = `FL${Math.round(object.altFeet / 100)} · ${object.speedKnots} kts · Hdg: ${object.heading}°`;
         } else if (object.entityType === 'thermal') {
             subtitle = `🔥 NASA FIRMS Thermal Anomaly (${object.confidence})`;
             details = `Radiative Power: ${object.frp} MW · ${object.theater}`;
         } else if (object.entityType === 'seismic') {
-            subtitle = `🌋 USGS Seismic Disturbance M${object.mag}`;
+            subtitle = `🌋 USGS Earthquake M ${object.mag}`;
             details = `Depth: ${object.depthKm} km · ${object.place}`;
-        } else if (object.type) {
-            subtitle = `⚔️ ${object.type.replace('_', ' ').toUpperCase()}`;
-            details = `${object.date || ''} · ${object.title || ''}`;
+        } else if (object.type === 'missile_strike') {
+            subtitle = `🚀 Kinetic Strike (${object.metadata?.weapon || 'Missile'})`;
+            details = `${object.theaterName || ''} · ${object.title}`;
+        } else if (object.type === 'battle') {
+            subtitle = `⚔️ Ground Engagement (${object.metadata?.intensity || 'High'} Intensity)`;
+            details = `${object.theaterName || ''} · ${object.title}`;
         }
 
         return {
@@ -104,23 +84,26 @@ export default function MapView({
         };
     };
 
-    /* ── Initialize Deck.gl ── */
+    /* ── Initialize Deck.gl with Uncontrolled 60FPS Controller ── */
     useEffect(() => {
         if (!containerRef.current) return;
 
         if (viewMode === 'globe') {
-            // Standalone 3D Spherical Globe View
             if (mapRef.current) {
                 mapRef.current.remove();
                 mapRef.current = null;
             }
 
+            // Uncontrolled initialViewState ensures fluid 60 FPS dragging, spinning, and mouse-wheel zooming
             const deck = new Deck({
                 parent: containerRef.current,
                 views: [new GlobeView({ id: 'globe', controller: true, resolution: 10 })],
-                viewState: globeViewState,
-                onViewStateChange: ({ viewState }) => {
-                    setGlobeViewState(viewState);
+                initialViewState: {
+                    longitude: center ? center[0] : 20,
+                    latitude: center ? center[1] : 25,
+                    zoom: zoom || 0.8,
+                    minZoom: -1.5,
+                    maxZoom: 16,
                 },
                 getTooltip,
                 layers: [],
@@ -157,16 +140,6 @@ export default function MapView({
                     },
                     layers: [
                         { id: 'carto-dark-layer', type: 'raster', source: 'carto-dark', minzoom: 0, maxzoom: 19 },
-                        {
-                            id: 'sky',
-                            type: 'sky',
-                            paint: {
-                                'sky-color': '#060910',
-                                'sky-horizon-blend': 0.6,
-                                'sky-atmosphere-color': 'rgba(0, 229, 255, 0.25)',
-                                'sky-atmosphere-halo-color': 'rgba(0, 229, 255, 0.15)'
-                            }
-                        }
                     ],
                     terrain: { source: 'terrain-source', exaggeration: 1.5 },
                 },
@@ -224,45 +197,48 @@ export default function MapView({
         }
     }, [viewMode]);
 
+    /* ── Smooth Camera FlyTo on Center/Hotspot Change ── */
+    useEffect(() => {
+        if (!center) return;
+        if (viewMode === 'globe' && deckRef.current) {
+            deckRef.current.setProps({
+                initialViewState: {
+                    longitude: center[0],
+                    latitude: center[1],
+                    zoom: zoom || 3.2,
+                    minZoom: -1.5,
+                    maxZoom: 16,
+                    transitionDuration: 1200,
+                    transitionInterpolator: new FlyToInterpolator(),
+                }
+            });
+        } else if (mapRef.current) {
+            mapRef.current.flyTo({ center, zoom: zoom || 3.5, pitch: 50, bearing: 0, duration: 1500, essential: true });
+        }
+    }, [center, zoom, viewMode]);
+
     /* ── Camera tracking for tracked entity ── */
     useEffect(() => {
         if (!trackedEntity) return;
         const coords = trackedEntity.coordinates || [trackedEntity.lon, trackedEntity.lat];
         if (!coords || coords[0] === undefined || coords[1] === undefined) return;
 
-        if (viewMode === 'globe') {
-            setGlobeViewState((prev) => ({
-                ...prev,
-                longitude: coords[0],
-                latitude: coords[1],
-                zoom: Math.max(prev.zoom, 2.5),
-                transitionDuration: 800,
-            }));
-        } else if (mapRef.current) {
-            mapRef.current.flyTo({
-                center: [coords[0], coords[1]],
-                zoom: Math.max(mapRef.current.getZoom(), 4.5),
-                speed: 1.2,
-                essential: true,
+        if (viewMode === 'globe' && deckRef.current) {
+            deckRef.current.setProps({
+                initialViewState: {
+                    longitude: coords[0],
+                    latitude: coords[1],
+                    zoom: 3.5,
+                    minZoom: -1.5,
+                    maxZoom: 16,
+                    transitionDuration: 800,
+                    transitionInterpolator: new FlyToInterpolator(),
+                }
             });
+        } else if (mapRef.current) {
+            mapRef.current.flyTo({ center: [coords[0], coords[1]], zoom: 4.5, speed: 1.2, essential: true });
         }
     }, [trackedEntity, viewMode]);
-
-    /* ── Fly to center on center change ── */
-    useEffect(() => {
-        if (!center || trackedEntity) return;
-        if (viewMode === 'globe') {
-            setGlobeViewState((prev) => ({
-                ...prev,
-                longitude: center[0],
-                latitude: center[1],
-                zoom: zoom ? Math.min(zoom * 0.4, 4) : 0.8,
-                transitionDuration: 1500,
-            }));
-        } else if (mapRef.current) {
-            mapRef.current.flyTo({ center, zoom: zoom || 3.5, pitch: 50, bearing: 0, duration: 1500, essential: true });
-        }
-    }, [center, zoom, trackedEntity, viewMode]);
 
     /* ── Update layers on Deck.gl ── */
     useEffect(() => {
@@ -289,15 +265,15 @@ export default function MapView({
 
         // 1. BASE COUNTRIES & GEOPOLITICAL TENSION TINTS
         const ACTIVE_TENSION_COUNTRIES = {
-            UKR: [61, 150, 255, 110], // Ukraine (Defensive blue)
-            RUS: [255, 61, 61, 110],  // Russia (Aggressor red)
+            UKR: [61, 150, 255, 110], // Ukraine
+            RUS: [255, 61, 61, 110],  // Russia
             ISR: [61, 180, 255, 110], // Israel
             LBN: [255, 145, 0, 110],  // Lebanon
-            YEM: [255, 61, 61, 110],  // Yemen (Houthis)
+            YEM: [255, 61, 61, 110],  // Yemen
             IRN: [255, 100, 0, 110],  // Iran
             SDN: [255, 145, 0, 110],  // Sudan
             TWN: [61, 200, 255, 110], // Taiwan
-            CHN: [255, 80, 80, 90],   // China
+            CHN: [255, 80, 80, 85],   // China
             PRK: [255, 61, 61, 110],  // North Korea
             KOR: [61, 180, 255, 90],  // South Korea
         };
@@ -324,7 +300,7 @@ export default function MapView({
             })
         );
 
-        // 2. ACTIVE CONFLICT STRIKES, BATTLES & SORTIES
+        // 2. ACTIVE CONFLICTS: MISSILES, BATTLES & SORTIES
         if (activeLayers.conflicts !== false && events.length > 0) {
             const missiles = events.filter((e) => e.type === 'missile_strike' && e.sourceCoordinates && e.targetCoordinates);
             const battles = events.filter((e) => e.type === 'battle' && e.coordinates);
@@ -356,7 +332,7 @@ export default function MapView({
                         data: missiles,
                         getPosition: d => d.targetCoordinates,
                         getFillColor: () => [255, 60, 0, 180 + (pulse * 70)],
-                        getRadius: isGlobe ? 38000 : 22000,
+                        getRadius: isGlobe ? 42000 : 22000,
                         radiusMinPixels: 6,
                         radiusMaxPixels: 20,
                         stroked: true,
@@ -369,7 +345,7 @@ export default function MapView({
                 );
             }
 
-            // Active Ground Engagements & Battles
+            // Active Ground Battles
             if (battles.length > 0) {
                 layers.push(
                     new ScatterplotLayer({
@@ -377,7 +353,7 @@ export default function MapView({
                         data: battles,
                         getPosition: d => d.coordinates,
                         getFillColor: () => [255, 145, 0, 160 + (pulse * 80)],
-                        getRadius: isGlobe ? 45000 : 25000,
+                        getRadius: isGlobe ? 50000 : 25000,
                         radiusMinPixels: 6,
                         radiusMaxPixels: 22,
                         stroked: true,
@@ -390,7 +366,7 @@ export default function MapView({
                 );
             }
 
-            // Military Air / Naval Deployments
+            // Military Deployments / Sorties
             if (deployments.length > 0) {
                 layers.push(
                     new ScatterplotLayer({
@@ -398,7 +374,7 @@ export default function MapView({
                         data: deployments,
                         getPosition: d => d.coordinates,
                         getFillColor: [0, 229, 255, 200],
-                        getRadius: isGlobe ? 32000 : 18000,
+                        getRadius: isGlobe ? 35000 : 18000,
                         radiusMinPixels: 5,
                         radiusMaxPixels: 16,
                         stroked: true,
@@ -411,9 +387,9 @@ export default function MapView({
             }
         }
 
-        // 3. SATELLITE ORBITAL LINES & FLEET
+        // 3. SATELLITE ORBITAL LINES & BULK SATELLITES (150+ SATELLITES)
         if (activeLayers.satellites !== false && satellites.length > 0) {
-            // Orbital Lines (densified so lines follow the 3D spherical curve perfectly!)
+            // Orbital Lines (densified so lines follow the 3D spherical curve smoothly)
             if (satelliteOrbits.length > 0) {
                 const densifiedOrbits = satelliteOrbits.map(o => ({
                     ...o,
@@ -428,17 +404,17 @@ export default function MapView({
                         getColor: d => {
                             if (d.type === 'station') return [0, 229, 255, 140];
                             if (d.type === 'recon') return [255, 61, 61, 140];
-                            if (d.type === 'starlink') return [255, 180, 0, 110];
-                            return [180, 130, 255, 120];
+                            if (d.type === 'starlink') return [255, 180, 0, 90];
+                            return [180, 130, 255, 100];
                         },
-                        getWidth: isGlobe ? 2.5 : 1.5,
-                        widthMinPixels: 1.5,
+                        getWidth: isGlobe ? 2 : 1.5,
+                        widthMinPixels: 1.2,
                         pickable: false,
                     })
                 );
             }
 
-            // Satellite Markers
+            // Satellite Markers (All 150+ satellites)
             layers.push(
                 new ScatterplotLayer({
                     id: 'satellite-fleet',
@@ -448,15 +424,15 @@ export default function MapView({
                         if (selectedEntity?.id === d.id) return [255, 255, 255, 255];
                         if (d.type === 'station') return [0, 229, 255, 240];
                         if (d.type === 'recon') return [255, 61, 61, 240];
-                        if (d.type === 'starlink') return [255, 180, 0, 220];
-                        return [192, 132, 252, 230];
+                        if (d.type === 'starlink') return [255, 180, 0, 200];
+                        return [192, 132, 252, 210];
                     },
                     getRadius: isGlobe ? 45000 : 28000,
-                    radiusMinPixels: 6,
+                    radiusMinPixels: 5,
                     radiusMaxPixels: 18,
                     stroked: true,
-                    lineWidthMinPixels: 2,
-                    getLineColor: d => selectedEntity?.id === d.id ? [0, 229, 255, 255] : [255, 255, 255, 200],
+                    lineWidthMinPixels: 1.8,
+                    getLineColor: d => selectedEntity?.id === d.id ? [0, 229, 255, 255] : [255, 255, 255, 180],
                     pickable: true,
                     onClick: ({ object }) => object && onEntityClickRef.current?.(object),
                     updateTriggers: {
@@ -468,7 +444,7 @@ export default function MapView({
             );
         }
 
-        // 4. FLIGHT ROUTE ARCS & AIRCRAFT
+        // 4. LIVE AIR TRAFFIC (HUNDREDS OF FLIGHTS WORLDWIDE)
         if (activeLayers.flights !== false && flights.length > 0) {
             const flightsWithCorridors = flights.filter(f => f.originCoords && f.destCoords);
             if (flightsWithCorridors.length > 0) {
@@ -496,15 +472,14 @@ export default function MapView({
                     getFillColor: d => {
                         if (selectedEntity?.icao24 === d.icao24) return [255, 255, 255, 255];
                         if (d.category === 'military') return [255, 70, 70, 240];
-                        if (d.category === 'cargo') return [192, 132, 252, 220];
-                        return [0, 229, 255, 230];
+                        return [0, 229, 255, 220];
                     },
                     getRadius: isGlobe ? 30000 : 18000,
-                    radiusMinPixels: 4.5,
+                    radiusMinPixels: 4,
                     radiusMaxPixels: 14,
                     stroked: true,
-                    lineWidthMinPixels: 1.5,
-                    getLineColor: d => selectedEntity?.icao24 === d.icao24 ? [255, 215, 0, 255] : [10, 14, 23, 220],
+                    lineWidthMinPixels: 1.2,
+                    getLineColor: d => selectedEntity?.icao24 === d.icao24 ? [255, 215, 0, 255] : [10, 14, 23, 200],
                     pickable: true,
                     onClick: ({ object }) => object && onEntityClickRef.current?.(object),
                     updateTriggers: {
@@ -516,7 +491,7 @@ export default function MapView({
             );
         }
 
-        // 5. THERMAL ANOMALIES & EXPLOSIONS
+        // 5. THERMAL ANOMALIES & EXPLOSIONS (NASA FIRMS)
         if (activeLayers.thermal !== false && thermalHotspots.length > 0) {
             layers.push(
                 new ScatterplotLayer({
@@ -537,7 +512,7 @@ export default function MapView({
             );
         }
 
-        // 6. USGS SEISMIC & EARTHQUAKES
+        // 6. REAL-TIME EARTHQUAKES (USGS 200+ QUAKES)
         if (activeLayers.seismic !== false && earthquakes.length > 0) {
             layers.push(
                 new ScatterplotLayer({
@@ -545,12 +520,12 @@ export default function MapView({
                     data: earthquakes.map(q => ({ ...q, entityType: 'seismic' })),
                     getPosition: d => [d.lon, d.lat, 0],
                     getFillColor: d => {
-                        if (d.alert === 'red' || d.mag >= 6) return [255, 61, 61, 180];
-                        if (d.alert === 'orange' || d.mag >= 5.5) return [255, 145, 0, 170];
+                        if (d.alert === 'red' || d.mag >= 6) return [255, 61, 61, 190];
+                        if (d.alert === 'orange' || d.mag >= 5.0) return [255, 145, 0, 180];
                         return [255, 215, 0, 150];
                     },
-                    getRadius: d => (d.mag || 4) * (isGlobe ? 10000 : 8000) + (pulse * 5000),
-                    radiusMinPixels: 6,
+                    getRadius: d => (d.mag || 4) * (isGlobe ? 10000 : 8000) + (pulse * 4000),
+                    radiusMinPixels: 5,
                     radiusMaxPixels: 22,
                     stroked: true,
                     lineWidthMinPixels: 1.5,
@@ -562,7 +537,7 @@ export default function MapView({
             );
         }
 
-        // 7. TARGET LOCK RETICLE OVER SELECTED ENTITY
+        // 7. SELECTION RETICLE RING OVER CHOSEN ASSET
         if (selectedEntity) {
             const coords = [selectedEntity.lon, selectedEntity.lat, 0];
             if (coords[0] !== undefined && coords[1] !== undefined) {
@@ -572,9 +547,9 @@ export default function MapView({
                         data: [{ position: coords }],
                         getPosition: d => d.position,
                         getFillColor: [0, 0, 0, 0],
-                        getRadius: isGlobe ? 65000 : 40000,
-                        radiusMinPixels: 18,
-                        radiusMaxPixels: 40,
+                        getRadius: isGlobe ? 70000 : 42000,
+                        radiusMinPixels: 20,
+                        radiusMaxPixels: 44,
                         stroked: true,
                         lineWidthMinPixels: 2.5,
                         getLineColor: () => [0, 229, 255, 220 + (pulse * 35)],
@@ -587,9 +562,8 @@ export default function MapView({
 
         deckRef.current.setProps({ layers });
     }, [
-        events, currentParticipants, activeWar, time,
-        satellites, satelliteOrbits, flights, thermalHotspots, earthquakes,
-        activeLayers, selectedEntity, viewMode
+        events, time, satellites, satelliteOrbits, flights, thermalHotspots,
+        earthquakes, activeLayers, selectedEntity, viewMode
     ]);
 
     return (
@@ -599,34 +573,24 @@ export default function MapView({
                 <div ref={mapLibreContainerRef} className="maplibre-container" />
             )}
 
-            {/* Tactical Viewport Controls (Globe vs Map & Auto-Rotate) */}
+            {/* Tactical Viewport Controls (Globe vs Map) */}
             <div className="tactical-view-controls">
                 <div className="view-mode-pill glass-panel">
                     <button
                         className={`view-mode-btn ${viewMode === 'globe' ? 'active' : ''}`}
                         onClick={() => setViewMode && setViewMode('globe')}
-                        title="Switch to 3D Planetary Globe (Ideal for viewing satellite orbits & flight curves)"
+                        title="3D Spherical Globe Mode (Drag to rotate, scroll to zoom)"
                     >
                         🌐 3D GLOBE
                     </button>
                     <button
                         className={`view-mode-btn ${viewMode === 'map' ? 'active' : ''}`}
                         onClick={() => setViewMode && setViewMode('map')}
-                        title="Switch to 2.5D Tactical Flat Map"
+                        title="2.5D Tactical Flat Map Mode"
                     >
                         🗺️ FLAT MAP
                     </button>
                 </div>
-
-                {viewMode === 'globe' && (
-                    <button
-                        className={`globe-rotate-btn glass-panel ${isAutoRotating ? 'active' : ''}`}
-                        onClick={() => setIsAutoRotating(p => !p)}
-                        title={isAutoRotating ? 'Pause Planetary Rotation' : 'Enable Planetary Auto-Rotation'}
-                    >
-                        {isAutoRotating ? '⏸ PAUSE ROTATION' : '🔄 AUTO ROTATE'}
-                    </button>
-                )}
             </div>
         </div>
     );
